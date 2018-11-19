@@ -626,17 +626,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void MotorDrive(uint8_t left, uint8_t right, uint8_t drive, uint8_t revers) {
 	
 	int16_t left_eng = 0, right_eng = 0;
-	int16_t drive_eng = 0, revers_eng = 0;
 	
 	if (left > 0) {
-		left_eng = (drive - revers) - left;
+		left_eng = (drive - revers) - (left / 2);
 		
-		right_eng = (drive - revers) + left;
+		right_eng = (drive - revers) + (left / 2);
 	}
 	if (right > 0) {
-		left_eng = (drive - revers) + right;
+		left_eng = (drive - revers) + (right / 2);
 		
-		right_eng = (drive - revers) - right;
+		right_eng = (drive - revers) - (right / 2);
 	}
 	if (right == 0 && left == 0) {
 		left_eng = (drive - revers);
