@@ -627,19 +627,36 @@ void MotorDrive(uint8_t left, uint8_t right, uint8_t drive, uint8_t revers) {
 	
 	int16_t left_eng = 0, right_eng = 0;
 	
-	if (left > 0) {
-		left_eng = (drive - revers) - (left / 2);
-		
-		right_eng = (drive - revers) + (left / 2);
-	}
-	if (right > 0) {
-		left_eng = (drive - revers) + (right / 2);
-		
-		right_eng = (drive - revers) - (right / 2);
-	}
-	if (right == 0 && left == 0) {
-		left_eng = (drive - revers);
-		right_eng = (drive - revers);
+	if (drive >= 0) {
+		if (left > 0) {
+			left_eng  = (drive - revers) - (left / 3);
+			
+			right_eng = (drive - revers) + (left / 3);
+		}
+		if (right > 0) {
+			left_eng  = (drive - revers) + (right / 3);
+			
+			right_eng = (drive - revers) - (right / 3);
+		}
+		if (right == 0 && left == 0) {
+			left_eng = (drive - revers);
+			right_eng = (drive - revers);
+		}
+	} else {
+		if (left > 0) {
+			right_eng = (drive - revers) + (left / 3);
+			
+			left_eng  = (drive - revers) - (left / 3);
+		}
+		if (right > 0) {
+			right_eng = (drive - revers) - (right / 3);
+			
+			left_eng  = (drive - revers) + (right / 3);
+		}
+		if (right == 0 && left == 0) {
+			left_eng = (drive - revers);
+			right_eng = (drive - revers);
+		}
 	}
 
 	if (left_eng < -100) left_eng = -100;
@@ -647,10 +664,10 @@ void MotorDrive(uint8_t left, uint8_t right, uint8_t drive, uint8_t revers) {
 	if (right_eng < -100) right_eng = -100;
 	
 	if (left_eng < 0) {
-		ENG1_R = ( 900 + (( 0-left_eng )*7));
+		ENG1_R = ( 870 + (( 0-left_eng )*6));
 		ENG1_D = 0;
 	} else if ( left_eng > 0) {
-		ENG1_D = ( 900 + ((left_eng)*7));
+		ENG1_D = ( 870 + ((left_eng)*6));
 		ENG1_R = 0;
 	} else {
 		ENG1_D = 0;
@@ -658,10 +675,10 @@ void MotorDrive(uint8_t left, uint8_t right, uint8_t drive, uint8_t revers) {
 	}
 	
 	if (right_eng < 0) {
-		ENG2_R = ( 900 + (( 0-right_eng )*7));
+		ENG2_R = ( 900 + (( 0-right_eng )*6));
 		ENG2_D = 0;
 	} else if ( right_eng > 0) {
-		ENG2_D = ( 900 + ((right_eng)*7));
+		ENG2_D = ( 900 + ((right_eng)*6));
 		ENG2_R = 0;
 	} else {
 		ENG2_D = 0;
